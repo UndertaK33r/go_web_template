@@ -1,0 +1,24 @@
+package settings
+
+import (
+	"fmt"
+
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
+)
+
+func Init()(err error){
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath(".")
+	err = viper.ReadInConfig()
+	if err != nil {
+		fmt.Println("viper.ReadInConfig() failed, err:%v\n",err)
+		return
+	}
+	viper.WatchConfig()
+	viper.OnConfigChange(func(in fsnotify.Event) {
+		fmt.Println("Config file changed:", in.Name)
+	})
+	return
+}
