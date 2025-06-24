@@ -51,9 +51,9 @@ type RedisConfig struct {
 }
 
 func Init() (err error) {
-	viper.SetConfigName("config") // 指定配置文件名称（不需要带后缀）
-	viper.SetConfigType("yaml")   // 指定配置文件类型
-	viper.AddConfigPath(".")      // 指定配置文件路径
+	viper.SetConfigName("config")   // 指定配置文件名称（不需要带后缀）
+	viper.SetConfigType("yaml")     // 指定配置文件类型
+	viper.AddConfigPath("./config") // 指定配置文件路径
 	err = viper.ReadInConfig()
 	if err != nil {
 		fmt.Printf("viper.ReadInConfig() failed, err:%v\n", err)
@@ -64,7 +64,12 @@ func Init() (err error) {
 	if err := viper.Unmarshal(Conf); err != nil {
 		fmt.Printf("viper.Unmarshal failed, err:%v\n", err)
 	}
+	// 监控配置文件变化
 	viper.WatchConfig()
+	// 当配置文件发生变更之后会调用的回调函数
+	// 注意：通过viper.WatchConfig()方法监听配置文件的变更，当配置文件发生变更之后会调用的回调函数
+	// OnConfigChange是一个回调函数，当配置文件发生变更之后会调用这个回调函数
+	// 钩子函数：当配置文件发生变更之后会调用这个回调函数
 	viper.OnConfigChange(func(in fsnotify.Event) {
 		fmt.Println("Config file changed:", in.Name)
 		if err := viper.Unmarshal(Conf); err != nil {

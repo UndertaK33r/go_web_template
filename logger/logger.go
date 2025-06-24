@@ -18,13 +18,18 @@ import (
 
 // InitLogger 初始化Logger
 func Init(cfg *settings.LogConfig) (err error) {
+	// 获取日志写入器
+	//getLogWriter()函数返回一个zapcore.WriteSyncer类型的日志写入器，用于将日志写入到指定的文件中。
 	writeSyncer := getLogWriter(
 		cfg.Filename,
 		cfg.MaxSize,
 		cfg.MaxBackups,
 		cfg.MaxAge,
 	)
+	// 获取日志编码器
 	encoder := getEncoder()
+	// 获取日志级别
+	// 调用zapcore.Level的UnmarshalText()方法将字符串类型的日志级别转换为zapcore.Level类型。
 	var l = new(zapcore.Level)
 	err = l.UnmarshalText([]byte(cfg.Level))
 	if err != nil {
@@ -37,6 +42,8 @@ func Init(cfg *settings.LogConfig) (err error) {
 	return
 }
 
+// getEncoder 设置日志格式
+// 该函数返回一个zapcore.Encoder类型的编码器，用于将日志格式化为JSON格式。
 func getEncoder() zapcore.Encoder {
 	encoderConfig := zap.NewProductionEncoderConfig()
 	encoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
@@ -47,6 +54,9 @@ func getEncoder() zapcore.Encoder {
 	return zapcore.NewJSONEncoder(encoderConfig)
 }
 
+// getLogWriter 构建日志的io.Writer
+// 该函数返回一个zapcore.WriteSyncer类型的日志写入器，用于将日志写入到指定的文件中。
+// filename: 日志文件名
 func getLogWriter(filename string, maxSize, maxBackup, maxAge int) zapcore.WriteSyncer {
 	lumberJackLogger := &lumberjack.Logger{
 		Filename:   filename,

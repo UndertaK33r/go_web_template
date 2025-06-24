@@ -9,7 +9,6 @@ import (
 	"go.uber.org/zap"
 )
 
-var db *sqlx.D
 var db *sqlx.DB
 
 // Init 初始化MySQL连接
