@@ -12,18 +12,25 @@ import (
 var Conf = new(AppConfig)
 
 type AppConfig struct {
-	//mapstructure是什么：mapstructure是Viper支持的配置解析器，它可以将配置信息解析到结构体中
-	//名字和yaml中的名字对应起来
-	Name    string `mapstructure:"name"`
-	Mode    string `mapstructure:"mode"`
-	Port    int    `mapstructure:"port"`
-	Version string `mapstructure:"version"`
+	// App配置信息
+	*AppInfo `mapstructure:"app"`
 	// 日志配置信息
 	*LogConfig `mapstructure:"log"`
 	// MySQL配置信息
 	*MySQLConfig `mapstructure:"mysql"`
 	// Redis配置信息
 	*RedisConfig `mapstructure:"redis"`
+}
+
+type AppInfo struct {
+	//mapstructure是什么：mapstructure是Viper支持的配置解析器，它可以将配置信息解析到结构体中
+	//名字和yaml中的名字对应起来
+	Name      string `mapstructure:"name"`
+	Mode      string `mapstructure:"mode"`
+	Port      int    `mapstructure:"port"`
+	Version   string `mapstructure:"version"`
+	StartTime string `mapstructure:"start_time"`
+	MachineID int64  `mapstructure:"machine_id"`
 }
 type LogConfig struct {
 	Level      string `mapstructure:"level"`
@@ -51,9 +58,7 @@ type RedisConfig struct {
 }
 
 func Init() (err error) {
-	viper.SetConfigName("config")   // 指定配置文件名称（不需要带后缀）
-	viper.SetConfigType("yaml")     // 指定配置文件类型
-	viper.AddConfigPath("./config") // 指定配置文件路径
+	viper.SetConfigFile("./config/config.yaml")
 	err = viper.ReadInConfig()
 	if err != nil {
 		fmt.Printf("viper.ReadInConfig() failed, err:%v\n", err)

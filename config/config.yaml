@@ -2,6 +2,10 @@ app:
   name: "template"
   mode: "dev"
   port: 8080
+  version: "v1.0.0"
+  start_time: "2025-06-25"
+  machine_id: 1
+
 
 mysql:
   host: "127.0.0.1"

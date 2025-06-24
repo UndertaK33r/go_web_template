@@ -4,6 +4,7 @@ import (
 	"Web_template/dao/mysql"
 	"Web_template/dao/redis"
 	"Web_template/logger"
+	"Web_template/pkg/snowflake"
 	"Web_template/routes"
 	"Web_template/settings"
 	"context"
@@ -22,6 +23,7 @@ import (
 //Go web开发比较通用的脚手架模板
 
 func main() {
+	fmt.Println(os.Args)
 	//1.加载配置文件
 	if err := settings.Init(); err != nil {
 		fmt.Printf("load config failed, err:%v\n", err)
@@ -32,7 +34,6 @@ func main() {
 		fmt.Printf("init logger failed, err:%v\n", err)
 		return
 	}
-	zap.L().Info("logger init success")
 	zap.L().Info("logger init success")
 	defer zap.L().Sync()
 	//3.初始化数据库链接
@@ -47,6 +48,12 @@ func main() {
 		return
 	}
 	defer redis.Close()
+
+	//初始化雪花算法
+	if err := snowflake.Init(settings.Conf.AppInfo.StartTime, settings.Conf.AppInfo.MachineID); err != nil {
+		fmt.Printf("init snowflake failed, err:%v\n", err)
+		return
+	}
 	//5.注册路由
 	router := routes.Setup()
 	//6.启动服务
