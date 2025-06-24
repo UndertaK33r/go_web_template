@@ -16,7 +16,7 @@ log:
   level: "debug"
   path: "./log"
   filename: "app.log"
-  maxsize: 200
+  max_size: 200
   max_age: 30
   max_backups: 7
 
