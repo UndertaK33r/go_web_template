@@ -1,0 +1,38 @@
+# config/config.yaml
+app:
+  name: "myapp"
+  version: "1.0.0"
+
+server:
+  port: 8080
+
+mysql:
+  master:
+    host: "localhost"
+    port: 3308
+    username: "root"
+    password: "12345678"
+    dbname: "file_s"
+    charset: "utf8mb4"
+    parseTime: true
+    loc: "Local"
+  slaves:
+    - host: "localhost"
+      port: 3307
+      username: "root"
+      password: "12345678"
+      dbname: "file_s"
+      charset: "utf8mb4"
+      parseTime: true
+      loc: "Local"
+
+redis:
+  addr: "localhost:6379"
+  password: ""
+  db: 0
+
+log:
+  level: "info"
+  format: "json"
+  output: "file"
+  filename: "app.log"
