@@ -17,14 +17,14 @@ mysql:
     parseTime: true
     loc: "Local"
   slaves:
-    - host: "localhost"
-      port: 3307
-      username: "root"
-      password: "12345678"
-      dbname: "file_s"
-      charset: "utf8mb4"
-      parseTime: true
-      loc: "Local"
+    host: "localhost"
+    port: 3307
+    username: "root"
+    password: "12345678"
+    dbname: "file_s"
+    charset: "utf8mb4"
+    parseTime: true
+    loc: "Local"
 
 redis:
   addr: "localhost:6379"
